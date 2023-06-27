@@ -25,10 +25,14 @@ export default function App() {
   )
 
   const [newPlanets, setNewPlanets] = useState({
-    id: planets.length + 1,
+    // id: planets.length + 1,
+    id: 4,
     name: "",
     diameter: 0
   });
+
+  const [editedPlanet, setEditedPlanet] = useState();
+  const [cart, setCart] = useState([]);
 
   // const elements = planets.map((planet,i) => <h3 key={i}>{planet}</h3>)
 
@@ -88,7 +92,7 @@ export default function App() {
         </label>
         <button>Tambah</button>
       </form> */}
-
+      <button>Keranjang : {cart.length}</button>
       <table>
         <thead>
           <tr>
@@ -105,8 +109,15 @@ export default function App() {
               <td>{planet.name}</td>
               <td>{planet.diameter}</td>
               <td>
-                <button>Edit</button>
-                <button>Hapus</button>
+                <button onClick={() => setCart([...cart, planet])}>
+                  Beli
+                </button>
+                <button onClick={() => setEditedPlanet(planet)}>Edit</button>
+                <button onClick={() =>
+                  confirm(`Apakah anda yakin ingin menghapus ?`) &&
+                  setPlanets(planets.filter((p) => p.id !== planet.id))}>
+                  Hapus
+                </button>
               </td>
             </tr>
           ))}
@@ -147,6 +158,54 @@ export default function App() {
         </label>
         <button>Tambah</button>
       </form>
+      {editedPlanet && (
+        <form
+          className="dialog"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setPlanets(
+              planets.map((planet) =>
+                planet.id === editedPlanet.id ? editedPlanet : planet
+              )
+            );
+            setEditedPlanet();
+          }}
+        >
+          <h1>Edit Planet</h1>
+          <label>
+            ID
+            <input
+              type="text"
+              value={editedPlanet.id}
+              onChange={(e) =>
+                setEditedPlanet({ ...editedPlanet, id: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Nama
+            <input
+              type="text"
+              value={editedPlanet.name}
+              onChange={(e) =>
+                setEditedPlanet({ ...editedPlanet, name: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Diameter
+            <input
+              type="number"
+              value={editedPlanet.diameter}
+              onChange={(e) =>
+                setEditedPlanet({ ...editedPlanet, diameter: e.target.value })
+              }
+            />
+          </label>
+          <button onClick={() => setEditedPlanet()}>Batal</button>
+          <button>Simpan</button>
+        </form>
+      )}
     </div>
   )
 }
