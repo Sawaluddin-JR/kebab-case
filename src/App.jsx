@@ -44,7 +44,7 @@ export default function App() {
     // </div>
 
     <div>
-      <table>
+      {/* <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -85,6 +85,65 @@ export default function App() {
         <label htmlFor="">
           Diameter
           <input type="number" value={newPlanets.diameter} />
+        </label>
+        <button>Tambah</button>
+      </form> */}
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Diameter</th>
+            <th>Tindakan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {planets.map((planet, i) => (
+            <tr key={i}>
+              <td>{planet.id}</td>
+              <td>{planet.name}</td>
+              <td>{planet.diameter}</td>
+              <td>
+                <button>Edit</button>
+                <button>Hapus</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setPlanets([...planets, newPlanets]);
+          setNewPlanets({ ...newPlanets, id: newPlanets.id + 1 });
+        }}
+      >
+        <label>
+          ID
+          <input
+            type="text"
+            value={newPlanets.id}
+            onChange={(e) => setNewPlanets({ ...newPlanets, id: e.target.value })}
+          />
+        </label>
+        <label>
+          Nama
+          <input
+            type="text"
+            onChange={(e) =>
+              setNewPlanets({ ...newPlanets, name: e.target.value })
+            }
+          />
+        </label>
+        <label>
+          Diameter
+          <input
+            type="number"
+            onChange={(e) =>
+              setNewPlanets({ ...newPlanets, diameter: e.target.value })
+            }
+          />
         </label>
         <button>Tambah</button>
       </form>
